@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='image/favicon.png') }}">
+    <title>KRACK | DASHBOARD</title>
+</head>
+<body>
+    <div class="center1">
+        <img src="{{url_for('static', filename='image/logo.png')}}" style="max-width: 40%; height: auto; display: block; margin-left: auto; margin-right: auto; padding-top: 10%;"/>
+        <h2>Dashboard</h2>
+        <p>Hello, {{ current_user.username }}!</p>
+    
+ {% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="{{ category }}">{{ message }}</div>
+  {% endfor %}
+{% endwith %}
+        
+<div class="scrollable-container">
+    {% if detection_results %}
+        <h2>Detection Results History</h2>
+        <ul>
+            {% for result in detection_results %}
+                <li>
+                    <img src="{{ url_for('static', filename='uploads/'+ result.image_path.replace('\\', '/')) }}" alt="Detection Image" >
+                    <p>Prediction: {{ result.prediction }}</p>
+                    <p>Confidence Level: {{ result.confidence_level }}</p>
+                    <p>Location: {{ result.location }}</p>
+                    <p>Date: {{ result.date }}</p>
+                    <form method="post" action="{{ url_for('delete_detection', detection_id=result.id) }}">
+                        <input type="submit" value="Delete" style="width: 30%;">
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No detection results available.</p>
+    {% endif %}
+</div>
+
+<br>
+<div class="user_button">
+    <a href="{{ url_for('about') }}">Predict Class Dist</a>
+    <a href="{{ url_for('crack_detect') }}">Perform Detection</a>
+    <a href="{{ url_for('logout') }}">Log Out</a>
+</div>
+        
+</div>
+        
+    
+</body>
+</html>

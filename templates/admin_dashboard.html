@@ -1,0 +1,44 @@
+<!-- admin_dashboard.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='image/favicon.png') }}">
+    <title>KRACK | ADMIN</title>
+</head>
+<body>
+    <div class="center1">
+        <img src="{{url_for('static', filename='image/logo.png')}}" style="max-width: 40%; height: auto; display: block; margin-left: auto; margin-right: auto; padding-top: 10%;"/>
+        <h1>Admin Dashboard</h1>
+        <p>Hello, {{ current_user.username }}!</p>
+
+<div class="scrollable-container">
+        {% if all_detection_results %}
+            <h2>All Detection Results</h2>
+            <ul>
+                {% for result in all_detection_results %}
+                    <li>
+                        <img src="{{ url_for('static', filename='uploads/'+ result.image_path.replace('\\', '/')) }}" alt="Detection Image" >
+                        <p>User: {{ result.user.username }}</p>
+                        <p>Prediction: {{ result.prediction }}</p>
+                        <p>Confidence Level: {{ result.confidence_level }}</p>
+                        <p>Location: {{ result.location }}</p>
+                        <p>Date: {{ result.date }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No detection results available.</p>
+        {% endif %}
+    </div>
+
+    <div class="user_button">
+        <a href="{{ url_for('adbout') }}">Predict Class Dist</a>
+        <a href="{{ url_for('logout') }}">Log Out</a>
+    </div>
+    </div>
+</body>
+</html>

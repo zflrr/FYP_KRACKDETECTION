@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='image/favicon.png') }}">
+    <title>KRACK | ADMIN</title>
+
+    <style>
+        canvas {
+            max-width: 100%; 
+        }
+       
+    .desc a {
+        font-size: 16px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .desc a {
+            font-size: 14px; 
+        }
+    }
+
+    </style>
+</head>
+<body>
+    <div class="center1">
+        <img src="{{url_for('static', filename='image/logo.png')}}" style="max-width: 40%; height: auto; display: block; margin-left: auto; margin-right: auto; padding-top: 10%;"/>
+        <h1>Prediction Class Distribution</h1>
+        
+        <div class="desc">
+            <a>This application is purposed to classify a crack and uncrack images using Binary Classification CNN Model.</a>
+            <a>All result will be record as data collection that can be use for future research or training. </a><br><br>
+            <a>Warning: Not all data is collected is correct and usable. </a>
+
+        </div>
+        
+
+    <canvas id="pieChart"></canvas>
+
+        <br>
+
+        <p><a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a></p>
+
+        <br>
+    <div class="user_button">
+            <a href="{{ url_for('adbout') }}">Predict Class Dist</a>
+            <a href="{{ url_for('logout') }}">Log Out</a>
+    </div>
+    </div>
+
+    
+
+    <script>
+        var predictionData = {{ prediction_counts | tojson }};
+
+        var ctx = document.getElementById('pieChart').getContext('2d');
+        var pieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(predictionData),
+                datasets: [{
+                    data: Object.values(predictionData),
+                    backgroundColor: ['#9796f0', '#FFDB58']
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Prediction Class Distribution'
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
